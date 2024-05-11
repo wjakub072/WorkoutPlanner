@@ -19,6 +19,8 @@ using WorkoutPlanner.Api.Repositories;
 using WorkoutPlanner.Api.Validators.RequestPayloads;
 using FluentValidation;
 using WorkoutPlanner.Api.Services;
+using WorkoutPlanner.Repositories;
+using WorkoutPlanner.Mappers;
 
 string ProductionEnviromentCorsPolicy = "_WorkoutPlannerCorsPolicy";
 
@@ -159,7 +161,10 @@ try
     // builder.Services.AddScoped<IAuthorizationHandler, UserAuthorizationHandler>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
-    // // Converters
+    // Mappers
+    builder.Services.AddAutoMapper(typeof(WorkoutRequestProfile));
+
+    // Converters
     // builder.Services.AddScoped<TimeParamsConverter>();
     // builder.Services.AddScoped<Base64Converter>();
 
@@ -173,7 +178,7 @@ try
     
     // // Repositories
     builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
-    // builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
+    builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
     // builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
     
     // // Providers 
