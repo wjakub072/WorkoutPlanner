@@ -24,7 +24,7 @@ public class AuthController : ControllerBase
         _loginRequestValidator = loginRequestValidator;
     }
 
-    [HttpPost("log-in")]
+    [HttpPost("sign-in")]
     [AllowAnonymous]
     public async Task<IActionResult> LogInAsync(
         [FromBody] LoginRequest request)
@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
         return Ok(logInResponse);
     }
 
-    [HttpPost("log-out")]
+    [HttpPost("sign-out")]
     [AllowAnonymous]
     public async Task<IActionResult> LogOutAsync()
     {

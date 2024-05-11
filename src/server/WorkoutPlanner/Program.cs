@@ -26,7 +26,8 @@ using WorkoutPlanner.Models;
 string ProductionEnviromentCorsPolicy = "_WorkoutPlannerCorsPolicy";
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
     .Enrich.FromLogContext()
     .WriteTo.Console(formatProvider: CultureInfo.CurrentCulture)
     .CreateBootstrapLogger();
