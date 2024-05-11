@@ -36,6 +36,17 @@
                 "${workspaceFolder}/WorkoutPlanner.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "run",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/WorkoutPlanner.sln"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

@@ -1,11 +1,14 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using WorkoutPlanner.Models;
 
 namespace WorkoutPlanner.Database.Application;
 
 public class WorkoutPlannerDatabaseContext : DbContext
 {
     public WorkoutPlannerDatabaseContext(DbContextOptions options) : base(options) {}
+
+    public DbSet<Profile> Profiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

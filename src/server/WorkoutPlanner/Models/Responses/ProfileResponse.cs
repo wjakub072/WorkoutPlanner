@@ -1,6 +1,6 @@
-namespace WorkoutPlanner.Models;
+namespace WorkoutPlanner.Models.Responses;
 
-public class Profile
+public class ProfileResponse
 {
     public int Id { get; set; }
     public string UserName { get; set; } = string.Empty;

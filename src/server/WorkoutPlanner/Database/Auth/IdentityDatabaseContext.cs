@@ -15,13 +15,13 @@ public class IdentityDatabaseContext : IdentityDbContext<ApplicationUser, Applic
     {
         base.OnModelCreating(builder);
 
-        builder.Entity<ApplicationUser>().ToTable("Users", "auth");
-        builder.Entity<ApplicationRole>().ToTable("Roles", "auth");
-        builder.Entity<IdentityUserClaim<int>>().ToTable("UserClaims", "auth");
-        builder.Entity<IdentityRoleClaim<int>>().ToTable("RoleClaims", "auth");
-        builder.Entity<IdentityUserToken<int>>().ToTable("UserTokens", "auth");
-        builder.Entity<IdentityUserLogin<int>>().ToTable("UserLogins", "auth");
-        builder.Entity<IdentityUserRole<int>>().ToTable("UserRoles", "auth");
+        builder.Entity<ApplicationUser>().ToTable("Users", "WPauth");
+        builder.Entity<ApplicationRole>().ToTable("Roles", "WPauth");
+        builder.Entity<IdentityUserClaim<int>>().ToTable("UserClaims", "WPauth");
+        builder.Entity<IdentityRoleClaim<int>>().ToTable("RoleClaims", "WPauth");
+        builder.Entity<IdentityUserToken<int>>().ToTable("UserTokens", "WPauth");
+        builder.Entity<IdentityUserLogin<int>>().ToTable("UserLogins", "WPauth");
+        builder.Entity<IdentityUserRole<int>>().ToTable("UserRoles", "WPauth");
 
         builder.ApplyConfigurationsFromAssembly(
                 typeof(IdentityDatabaseContext).Assembly,

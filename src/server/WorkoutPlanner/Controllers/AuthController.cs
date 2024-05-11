@@ -1,10 +1,12 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProfitNest.Api.Data.Requests;
-using ProfitNest.Api.Data.Responses;
-using ProfitNest.Api.Services;
+using WorkoutPlanner.Api.Data.Requests;
+using WorkoutPlanner.Api.Data.Responses;
+using WorkoutPlanner.Api.Services;
+using WorkoutPlanner.Models.Responses;
 
-namespace ProfitNest.Api.Controllers;
+namespace WorkoutPlanner.Api.Controllers;
 
 [ApiController]
 [Authorize]
@@ -34,7 +36,7 @@ public class AuthController : ControllerBase
         LogInResponse logInResponse = new()
         {
             AccessToken = accessTokenResponse,
-            User = await _authService.FindCurrentUserByNameAsync(request.UserName)
+            User = await _authService.FindCurrentUserByEmailAsync(request.Email)
         };
 
         CookieOptions cookieOptions = new CookieOptions
@@ -82,7 +84,7 @@ public class AuthController : ControllerBase
         return Ok(accessTokenResponse);
     }
 
-    [HttpPost("signup")]
+    [HttpPost("sign-up")]
     [AllowAnonymous]
     public async Task<IActionResult> SignUpAsync(
         [FromBody] SignUpRequest credentials)
