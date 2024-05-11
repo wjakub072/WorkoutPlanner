@@ -13,5 +13,7 @@ public class ProfileConfiguration : IEntityTypeConfiguration<Profile>
 
         builder.Property(c => c.Name).HasMaxLength(255);
         builder.Property(c => c.SurName).HasMaxLength(255);
+        builder.Property(c => c.Height).HasPrecision(11,4);
+        builder.Property(c => c.Weight).HasPrecision(11,4);
     }
 }

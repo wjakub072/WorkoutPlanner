@@ -26,7 +26,7 @@ using WorkoutPlanner.Models;
 string ProductionEnviromentCorsPolicy = "_WorkoutPlannerCorsPolicy";
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
     .WriteTo.Console(formatProvider: CultureInfo.CurrentCulture)
     .CreateBootstrapLogger();
@@ -51,9 +51,16 @@ try
 
 
     // logging
-    builder.Host.UseSerilog((ctx, setup) => setup
-        .ReadFrom.Configuration(builder.Configuration));
+    var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 
+    builder.Logging.ClearProviders();
+    builder.Logging.AddSerilog(logger);
+
+    builder.Host.UseSerilog();
+    
     // auth database
     builder.Services.AddDbContext<IdentityDatabaseContext>((config) => {
         config.UseSqlServer(builder.Configuration.GetConnectionString("AuthDatabase"));
@@ -183,13 +190,14 @@ try
 
     var app = builder.Build();
 
+    app.UseSerilogRequestLogging();
+
     if (seed)
     {
         await SeedData.EnsureSeedDataAsync(app.Services);
         return;
     }
 
-    app.UseSerilogRequestLogging();
     app.UseMiddleware<ErrorHandlingMiddleware>();
     
     // Configure the HTTP request pipeline.

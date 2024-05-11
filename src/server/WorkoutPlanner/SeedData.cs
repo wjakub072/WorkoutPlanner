@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using WorkoutPlanner.Api.Repositories;
+using WorkoutPlanner.Database.Application;
+using WorkoutPlanner.Database.Auth;
 using WorkoutPlanner.Models.Auth;
 
 namespace WorkoutPlanner.Api;
@@ -23,7 +26,8 @@ public class SeedData
             await ensureSeedDataAsync(services);
         } catch (Exception e)
         {
-            System.Console.WriteLine(e.ToString());
+            Log.Error(e.Message);
+            Log.Error(e.InnerException?.Message ?? "");
         }
     }
     private static async Task ensureSeedDataAsync(IServiceProvider services)
@@ -43,12 +47,20 @@ public class SeedData
         {
             throw new NotSupportedException("Admin password must not be empty");
         }
-
-        Serilog.ILogger logger = Log.ForContext<SeedData>();
-        logger.Information("Seeding database...");
+    
+        Log.Information("Seeding database...");
 
         using IServiceScope scope =
             services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+
+        IdentityDatabaseContext identityDbContext = scope.ServiceProvider.GetRequiredService<IdentityDatabaseContext>();
+
+        await identityDbContext.Database.EnsureCreatedAsync();
+        // await identityDbContext.Database.MigrateAsync();
+
+        WorkoutPlannerDatabaseContext appDbContext = scope.ServiceProvider.GetRequiredService<WorkoutPlannerDatabaseContext>();
+        await appDbContext.Database.EnsureCreatedAsync();
+        await appDbContext.Database.MigrateAsync();
 
         UserManager<ApplicationUser> userManager =
             scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -74,7 +86,7 @@ public class SeedData
                 throw new InvalidOperationException(result.Errors.First().Description);
             }
 
-            logger.Information("{Role} created", roleName);
+            Log.Information("{Role} created", roleName);
         }
 
         List<IPasswordValidator<ApplicationUser>> backup = userManager.PasswordValidators.ToList();
@@ -108,11 +120,11 @@ public class SeedData
                 throw new InvalidOperationException(result.Errors.First().Description);
             }
 
-            logger.Information("{User} user created", adminName);
+            Log.Information("{User} user created", adminName);
         }
         else
         {
-            logger.Information("{User} user already exists", adminName);
+            Log.Information("{User} user already exists", adminName);
 
             string resetToken = await userManager.GeneratePasswordResetTokenAsync(user);
             IdentityResult result =
@@ -123,11 +135,11 @@ public class SeedData
                 throw new InvalidOperationException(result.Errors.First().Description);
             }
 
-            logger.Information("Reset password to default for {User}", adminName);
+            Log.Information("Reset password to default for {User}", adminName);
         }
 
         backup.ForEach(userManager.PasswordValidators.Add);
-        logger.Information("Done seeding database.");
+        Log.Information("Done seeding database.");
     }
 
     private static string GetPassword()
