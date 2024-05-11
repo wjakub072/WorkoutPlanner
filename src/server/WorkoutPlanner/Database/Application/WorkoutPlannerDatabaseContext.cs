@@ -12,6 +12,7 @@ public class WorkoutPlannerDatabaseContext : DbContext
     public DbSet<Workout> Workouts { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<Meal> Meals { get; set; }
+    public DbSet<Ingredient> Ingredients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -3,7 +3,7 @@ namespace WorkoutPlanner.Models;
 public class Ingredient
 {
     public int Id { get; set; }
-    public int MealId { get; internal set; }
-    public string Name { get; set; } = default!;
+    public int MealId { get; set; }
+    public string Name { get; set; } = string.Empty;
     public decimal Calories { get; set; }
 }

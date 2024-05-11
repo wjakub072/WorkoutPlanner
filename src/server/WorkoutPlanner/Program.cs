@@ -21,6 +21,7 @@ using FluentValidation;
 using WorkoutPlanner.Api.Services;
 using WorkoutPlanner.Repositories;
 using WorkoutPlanner.Mappers;
+using WorkoutPlanner.Models;
 
 string ProductionEnviromentCorsPolicy = "_WorkoutPlannerCorsPolicy";
 
@@ -158,31 +159,18 @@ try
     });
 
     // Utils 
-    // builder.Services.AddScoped<IAuthorizationHandler, UserAuthorizationHandler>();
     builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
     // Mappers
     builder.Services.AddAutoMapper(typeof(WorkoutRequestProfile));
 
-    // Converters
-    // builder.Services.AddScoped<TimeParamsConverter>();
-    // builder.Services.AddScoped<Base64Converter>();
-
     // // Services
     builder.Services.AddScoped<IAuthService, AuthService>();
-    // builder.Services.AddScoped<IiCalService, ICalService>();
-    // builder.Services.AddScoped<ICurrencyService, CurrencyService>();
-
-    // // HttpClients 
-    // builder.Services.AddScoped<CurrencyClient>();
     
     // // Repositories
     builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
     builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
-    // builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
-    
-    // // Providers 
-    // builder.Services.AddScoped<ISummaryProvider, SummaryProvider>();
+    builder.Services.AddScoped<IMealRepository, MealRepository>();
 
     // Validatiors
     builder.Services.AddValidatorsFromAssemblyContaining<SignUpRequestValidator>();

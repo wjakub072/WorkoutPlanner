@@ -86,7 +86,7 @@ public class WorkoutRepository : IWorkoutRepository
     {
         var exercise = await _db.Exercises.Where(c => c.Id == exerciseId).FirstOrDefaultAsync();
 
-        if(exercise is null) throw new Exception("Workout not found.");
+        if(exercise is null) throw new Exception("Exercise not found.");
 
         var workout = await _db.Workouts.Where(c => c.Id == exercise.WorkoutId).FirstOrDefaultAsync();
         if(workout is null) throw new Exception("Workout for exercise not found.");
